@@ -96,5 +96,5 @@ This project is for educational purposes.
 Previous Project: [ESP32 Bluetooth Mouse](https://github.com/Inhle-C/Project-4-esp32-lab4-bluetooth-mouse)  
 (Part 4 of the series)
 
-Next Project: [ESP32 Sensor Data Logger](https://github.com/Inhle-C/Project-6-esp32-ultrasonic-sensor) 🔗  
+Next Project: [ESP32 Ulatrasonic Range Finder](https://github.com/Inhle-C/Project-6-esp32-ultrasonic-sensor) 🔗  
 (To be uploaded as Part 6 of the series)
