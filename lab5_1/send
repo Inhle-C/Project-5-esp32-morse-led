@@ -1,0 +1,76 @@
+#!/usr/bin/env python3
+
+import RPi.GPIO as GPIO
+import time
+import sys
+
+# GPIO setup
+LED_PIN = 18  # Example GPIO pin
+GPIO.setmode(GPIO.BCM)
+#!/usr/bin/env python3
+
+import RPi.GPIO as GPIO
+import time
+import sys
+
+# GPIO setup
+LED_PIN = 18  # Example GPIO pin
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(LED_PIN, GPIO.OUT)
+
+# Morse code dictionary
+MORSE_CODE = {
+    'a': '.-', 'b': '-...', 'c': '-.-.', 'd': '-..', 'e': '.', 'f': '..-.',
+    'g': '--.', 'h': '....', 'i': '..', 'j': '.---', 'k': '-.-', 'l': '.-..',
+    'm': '--', 'n': '-.', 'o': '---', 'p': '.--.', 'q': '--.-', 'r': '.-.',
+    's': '...', 't': '-', 'u': '..-', 'v': '...-', 'w': '.--', 'x': '-..-',
+    'y': '-.--', 'z': '--..', ' ': '/', '1': '.----', '2': '..---',
+    '3': '...--', '4': '....-', '5': '.....', '6': '-....', '7': '--...',
+    '8': '---..', '9': '----.', '0': '-----'
+}
+
+def morse_to_led(message, repeats):
+    def blink(duration):
+        """Blink LED for the specified duration."""
+        GPIO.output(LED_PIN, GPIO.HIGH)
+        time.sleep(duration)
+        GPIO.output(LED_PIN, GPIO.LOW)
+        time.sleep(unit * 0.5)  # Inter-element gap (50% of unit time)
+
+    # Base time unit for Morse code
+    unit = 0.2  # seconds
+
+    # Timing definitions
+    dot_duration = unit
+    dash_duration = 3 * unit
+    letter_gap = 3 * unit  # Gap between letters
+    word_gap = 7 * unit    # Gap between words
+    repeat_gap = 10 * unit  # Gap between message repeats
+
+    # Send message with smoothing
+    for i in range(repeats):
+        for char in message.lower():
+            if char in MORSE_CODE:
+                for symbol in MORSE_CODE[char]:
+                    if symbol == '.':
+                        blink(dot_duration)
+                    elif symbol == '-':
+                        blink(dash_duration)
+                time.sleep(letter_gap)  # Gap between letters
+            elif char == ' ':
+                time.sleep(word_gap)  # Gap between words
+        if i < repeats - 1:  # Add repeat gap only between repeats
+            time.sleep(repeat_gap)
+
+if __name__ == "__main__":
+    # Get number of repeats and message from command-line arguments
+    repeats = int(sys.argv[1])
+    message = sys.argv[2]
+
+    try:
+        # Transmit the Morse code
+        morse_to_led(message, repeats)
+    finally:
+        # Cleanup GPIO settings
+        GPIO.cleanup()
+
